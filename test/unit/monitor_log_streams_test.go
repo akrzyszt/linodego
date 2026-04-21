@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateMonitorStream(t *testing.T) {
-	fixtureData, err := fixtures.GetFixture("monitor_stream")
+func TestCreateMonitorLogStream(t *testing.T) {
+	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
 	assert.NoError(t, err)
 
 	var base ClientBaseCase
@@ -40,7 +40,7 @@ func TestCreateMonitorStream(t *testing.T) {
 	assert.Equal(t, linodego.StreamDestinationTypeAkamaiObjectStorage, stream.Destinations[0].Type)
 }
 
-func TestListMonitorStreams(t *testing.T) {
+func TestListMonitorLogStreams(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_streams_list")
 	assert.NoError(t, err)
 
@@ -59,8 +59,8 @@ func TestListMonitorStreams(t *testing.T) {
 	assert.Equal(t, 1, streams[0].Version)
 }
 
-func TestGetMonitorStream(t *testing.T) {
-	fixtureData, err := fixtures.GetFixture("monitor_stream")
+func TestGetMonitorLogStream(t *testing.T) {
+	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
 	assert.NoError(t, err)
 
 	var base ClientBaseCase
@@ -79,8 +79,8 @@ func TestGetMonitorStream(t *testing.T) {
 	assert.NotNil(t, stream.Updated)
 }
 
-func TestUpdateMonitorStream(t *testing.T) {
-	fixtureData, err := fixtures.GetFixture("monitor_stream")
+func TestUpdateMonitorLogStream(t *testing.T) {
+	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
 	assert.NoError(t, err)
 
 	var base ClientBaseCase
@@ -108,7 +108,7 @@ func TestUpdateMonitorStream(t *testing.T) {
 	assert.Equal(t, 1, stream.Version)
 }
 
-func TestListMonitorStreamHistory(t *testing.T) {
+func TestListMonitorLogStreamHistory(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_streams_history")
 	assert.NoError(t, err)
 
@@ -128,7 +128,7 @@ func TestListMonitorStreamHistory(t *testing.T) {
 	assert.Equal(t, linodego.StreamStatusInactive, streams[1].Status)
 }
 
-func TestDeleteMonitorStream(t *testing.T) {
+func TestDeleteMonitorLogStream(t *testing.T) {
 	var base ClientBaseCase
 	base.SetUp(t)
 	defer base.TearDown(t)
