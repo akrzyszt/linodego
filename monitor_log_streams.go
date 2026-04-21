@@ -103,37 +103,37 @@ func (s *Stream) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// ListMonitorStreams returns all ACLP logs streams under the account.
-func (c *Client) ListMonitorStreams(ctx context.Context, opts *ListOptions) ([]Stream, error) {
+// ListLogStreams returns all ACLP logs streams under the account.
+func (c *Client) ListLogStreams(ctx context.Context, opts *ListOptions) ([]Stream, error) {
 	return getPaginatedResults[Stream](ctx, c, "monitor/streams", opts)
 }
 
-// GetMonitorStream returns a single ACLP logs stream by ID.
-func (c *Client) GetMonitorStream(ctx context.Context, streamID int) (*Stream, error) {
+// GetLogStream returns a single ACLP logs stream by ID.
+func (c *Client) GetLogStream(ctx context.Context, streamID int) (*Stream, error) {
 	e := formatAPIPath("monitor/streams/%d", streamID)
 	return doGETRequest[Stream](ctx, c, e)
 }
 
-// CreateMonitorStream creates a new ACLP logs stream.
-func (c *Client) CreateMonitorStream(ctx context.Context, opts StreamCreateOptions) (*Stream, error) {
+// CreateLogStream creates a new ACLP logs stream.
+func (c *Client) CreateLogStream(ctx context.Context, opts StreamCreateOptions) (*Stream, error) {
 	e := formatAPIPath("monitor/streams")
 	return doPOSTRequest[Stream](ctx, c, e, opts)
 }
 
-// UpdateMonitorStream updates an ACLP logs stream by ID.
-func (c *Client) UpdateMonitorStream(ctx context.Context, streamID int, opts StreamUpdateOptions) (*Stream, error) {
+// UpdateLogStream updates an ACLP logs stream by ID.
+func (c *Client) UpdateLogStream(ctx context.Context, streamID int, opts StreamUpdateOptions) (*Stream, error) {
 	e := formatAPIPath("monitor/streams/%d", streamID)
 	return doPUTRequest[Stream](ctx, c, e, opts)
 }
 
-// ListMonitorStreamHistory returns all versions of an ACLP logs stream.
-func (c *Client) ListMonitorStreamHistory(ctx context.Context, streamID int, opts *ListOptions) ([]Stream, error) {
+// ListLogStreamHistory returns all versions of an ACLP logs stream.
+func (c *Client) ListLogStreamHistory(ctx context.Context, streamID int, opts *ListOptions) ([]Stream, error) {
 	e := formatAPIPath("monitor/streams/%d/history", streamID)
 	return getPaginatedResults[Stream](ctx, c, e, opts)
 }
 
-// DeleteMonitorStream deletes an ACLP logs stream by ID.
-func (c *Client) DeleteMonitorStream(ctx context.Context, streamID int) error {
+// DeleteLogStream deletes an ACLP logs stream by ID.
+func (c *Client) DeleteLogStream(ctx context.Context, streamID int) error {
 	e := formatAPIPath("monitor/streams/%d", streamID)
 	return doDELETERequest(ctx, c, e)
 }

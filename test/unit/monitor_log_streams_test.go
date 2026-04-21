@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateMonitorLogStream(t *testing.T) {
+func TestCreateLogStream(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
 	assert.NoError(t, err)
 
@@ -26,7 +26,7 @@ func TestCreateMonitorLogStream(t *testing.T) {
 		Status:       &status,
 	}
 
-	stream, err := base.Client.CreateMonitorStream(context.Background(), createOpts)
+	stream, err := base.Client.CreateLogStream(context.Background(), createOpts)
 	assert.NoError(t, err)
 	assert.NotNil(t, stream)
 	assert.Equal(t, 456, stream.ID)
@@ -40,7 +40,7 @@ func TestCreateMonitorLogStream(t *testing.T) {
 	assert.Equal(t, linodego.StreamDestinationTypeAkamaiObjectStorage, stream.Destinations[0].Type)
 }
 
-func TestListMonitorLogStreams(t *testing.T) {
+func TestListLogStreams(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_streams_list")
 	assert.NoError(t, err)
 
@@ -50,7 +50,7 @@ func TestListMonitorLogStreams(t *testing.T) {
 
 	base.MockGet("monitor/streams", fixtureData)
 
-	streams, err := base.Client.ListMonitorStreams(context.Background(), &linodego.ListOptions{})
+	streams, err := base.Client.ListLogStreams(context.Background(), &linodego.ListOptions{})
 	assert.NoError(t, err)
 	assert.Len(t, streams, 1)
 	assert.Equal(t, 456, streams[0].ID)
@@ -59,7 +59,7 @@ func TestListMonitorLogStreams(t *testing.T) {
 	assert.Equal(t, 1, streams[0].Version)
 }
 
-func TestGetMonitorLogStream(t *testing.T) {
+func TestGetLogStream(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
 	assert.NoError(t, err)
 
@@ -69,7 +69,7 @@ func TestGetMonitorLogStream(t *testing.T) {
 
 	base.MockGet("monitor/streams/456", fixtureData)
 
-	stream, err := base.Client.GetMonitorStream(context.Background(), 456)
+	stream, err := base.Client.GetLogStream(context.Background(), 456)
 	assert.NoError(t, err)
 	assert.NotNil(t, stream)
 	assert.Equal(t, 456, stream.ID)
@@ -79,7 +79,7 @@ func TestGetMonitorLogStream(t *testing.T) {
 	assert.NotNil(t, stream.Updated)
 }
 
-func TestUpdateMonitorLogStream(t *testing.T) {
+func TestUpdateLogStream(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
 	assert.NoError(t, err)
 
@@ -99,7 +99,7 @@ func TestUpdateMonitorLogStream(t *testing.T) {
 		Status:       &status,
 	}
 
-	stream, err := base.Client.UpdateMonitorStream(context.Background(), 456, updateOpts)
+	stream, err := base.Client.UpdateLogStream(context.Background(), 456, updateOpts)
 	assert.NoError(t, err)
 	assert.NotNil(t, stream)
 	assert.Equal(t, 456, stream.ID)
@@ -108,7 +108,7 @@ func TestUpdateMonitorLogStream(t *testing.T) {
 	assert.Equal(t, 1, stream.Version)
 }
 
-func TestListMonitorLogStreamHistory(t *testing.T) {
+func TestListLogStreamHistory(t *testing.T) {
 	fixtureData, err := fixtures.GetFixture("monitor_log_streams_history")
 	assert.NoError(t, err)
 
@@ -118,7 +118,7 @@ func TestListMonitorLogStreamHistory(t *testing.T) {
 
 	base.MockGet("monitor/streams/456/history", fixtureData)
 
-	streams, err := base.Client.ListMonitorStreamHistory(context.Background(), 456, nil)
+	streams, err := base.Client.ListLogStreamHistory(context.Background(), 456, nil)
 	assert.NoError(t, err)
 	assert.Len(t, streams, 2)
 	assert.Equal(t, "AuditLog-config", streams[0].Label)
@@ -128,13 +128,13 @@ func TestListMonitorLogStreamHistory(t *testing.T) {
 	assert.Equal(t, linodego.StreamStatusInactive, streams[1].Status)
 }
 
-func TestDeleteMonitorLogStream(t *testing.T) {
+func TestDeleteLogStream(t *testing.T) {
 	var base ClientBaseCase
 	base.SetUp(t)
 	defer base.TearDown(t)
 
 	base.MockDelete("monitor/streams/456", nil)
 
-	err := base.Client.DeleteMonitorStream(context.Background(), 456)
+	err := base.Client.DeleteLogStream(context.Background(), 456)
 	assert.NoError(t, err)
 }
