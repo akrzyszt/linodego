@@ -41,7 +41,7 @@ func TestCreateMonitorStream(t *testing.T) {
 }
 
 func TestListMonitorStreams(t *testing.T) {
-	fixtureData, err := fixtures.GetFixture("monitor_streams_list")
+	fixtureData, err := fixtures.GetFixture("monitor_log_streams_list")
 	assert.NoError(t, err)
 
 	var base ClientBaseCase
@@ -109,7 +109,7 @@ func TestUpdateMonitorStream(t *testing.T) {
 }
 
 func TestListMonitorStreamHistory(t *testing.T) {
-	fixtureData, err := fixtures.GetFixture("monitor_streams_history")
+	fixtureData, err := fixtures.GetFixture("monitor_log_streams_history")
 	assert.NoError(t, err)
 
 	var base ClientBaseCase
