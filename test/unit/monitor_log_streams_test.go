@@ -128,6 +128,70 @@ func TestListLogStreamHistory(t *testing.T) {
 	assert.Equal(t, linodego.StreamStatusInactive, streams[1].Status)
 }
 
+func TestGetLogStream_DestinationDetails(t *testing.T) {
+	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
+	assert.NoError(t, err)
+
+	var base ClientBaseCase
+	base.SetUp(t)
+	defer base.TearDown(t)
+
+	base.MockGet("monitor/streams/456", fixtureData)
+
+	stream, err := base.Client.GetLogStream(context.Background(), 456)
+	assert.NoError(t, err)
+	assert.Len(t, stream.Destinations, 1)
+
+	dest := stream.Destinations[0]
+	assert.Equal(t, 12345, dest.ID)
+	assert.Equal(t, "OBJ_logs_destination", dest.Label)
+	assert.Equal(t, linodego.StreamDestinationTypeAkamaiObjectStorage, dest.Type)
+	assert.Equal(t, 123, dest.Details.AccessKeyID)
+	assert.Equal(t, "primary-bucket", dest.Details.BucketName)
+	assert.Equal(t, "primary-bucket-1.us-iad-12.linodeobjects.com", dest.Details.Host)
+	assert.Equal(t, "audit-logs", dest.Details.Path)
+}
+
+func TestUpdateLogStream_DestinationsOnly(t *testing.T) {
+	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
+	assert.NoError(t, err)
+
+	var base ClientBaseCase
+	base.SetUp(t)
+	defer base.TearDown(t)
+
+	base.MockPut("monitor/streams/456", fixtureData)
+
+	stream, err := base.Client.UpdateLogStream(context.Background(), 456, linodego.StreamUpdateOptions{
+		Destinations: []int{12345},
+	})
+	assert.NoError(t, err)
+	assert.NotNil(t, stream)
+	assert.Len(t, stream.Destinations, 1)
+	assert.Equal(t, 12345, stream.Destinations[0].ID)
+}
+
+func TestUpdateLogStream_LabelAndStatus(t *testing.T) {
+	fixtureData, err := fixtures.GetFixture("monitor_log_stream")
+	assert.NoError(t, err)
+
+	var base ClientBaseCase
+	base.SetUp(t)
+	defer base.TearDown(t)
+
+	base.MockPut("monitor/streams/456", fixtureData)
+
+	label := "AuditLog-config"
+	status := linodego.StreamStatusActive
+	stream, err := base.Client.UpdateLogStream(context.Background(), 456, linodego.StreamUpdateOptions{
+		Label:  &label,
+		Status: &status,
+	})
+	assert.NoError(t, err)
+	assert.Equal(t, "AuditLog-config", stream.Label)
+	assert.Equal(t, linodego.StreamStatusActive, stream.Status)
+}
+
 func TestDeleteLogStream(t *testing.T) {
 	var base ClientBaseCase
 	base.SetUp(t)
