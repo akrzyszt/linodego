@@ -109,14 +109,14 @@ func setupLogDestination(
 	client *linodego.Client,
 	key *linodego.ObjectStorageKey,
 	bucket *linodego.ObjectStorageBucket,
-) (*linodego.Destination, func(), error) {
+) (*linodego.LogsDestination, func(), error) {
 	t.Helper()
 	ctx := context.Background()
 
-	dest, err := client.CreateLogDestination(ctx, linodego.DestinationCreateOptions{
+	dest, err := client.CreateLogsDestination(ctx, linodego.LogsDestinationCreateOptions{
 		Label: fmt.Sprintf("go-test-aclp-dest-%d", time.Now().UnixNano()),
-		Type:  linodego.DestinationTypeAkamaiObjectStorage,
-		Details: linodego.DestinationCreateDetails{
+		Type:  linodego.LogsDestinationTypeAkamaiObjectStorage,
+		Details: linodego.LogsDestinationDetailsCreateOptions{
 			AccessKeyID:     key.AccessKey,
 			AccessKeySecret: key.SecretKey,
 			BucketName:      bucket.Label,
@@ -128,7 +128,7 @@ func setupLogDestination(
 	}
 
 	teardown := func() {
-		_ = client.DeleteLogDestination(context.Background(), dest.ID)
+		_ = client.DeleteLogsDestination(context.Background(), dest.ID)
 	}
 
 	return dest, teardown, nil
