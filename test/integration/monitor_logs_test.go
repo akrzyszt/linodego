@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	aclpLogsCapability = "aclp_logs"
+	aclpLogsCapability = "Akamai Cloud Pulse Logs"
 )
 
 // requireACLPLogsStreamTests skips the test if RUN_ACLP_LOGS_STREAM_TESTS is not set.
